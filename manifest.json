@@ -1,0 +1,21 @@
+{
+    "name": "qbittorrent-helper",
+    "version": "0.0.1",
+    "description": "Chrome extension to help with qBittorrent",
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "js/background.js"
+    },
+    "permissions": [
+        "contextMenus",
+        "storage",
+        "webRequest",
+        "cookies",
+        "declarativeContent", 
+        "activeTab"
+    ],
+    "action": {
+        "default_popup": "html/settings.html"
+    },
+    "host_permissions": ["*://*/*"]
+}
