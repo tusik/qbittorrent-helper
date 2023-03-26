@@ -8,8 +8,8 @@
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
  */
-let qb_cookie = '';
-
+import {qBitorrentApi} from "./qbittorrent.js"
+let api = new qBitorrentApi()
 function createContextMenus() {
 	chrome.contextMenus.create(
 		{
@@ -27,37 +27,26 @@ chrome.contextMenus.onClicked.addListener(menu => {
 		let url = menu.linkUrl;
 		let torrent_link = menu.linkUrl;
 		console.log(torrent_link);
-		api();
+		api.addTorrent(torrent_link);
 	}
 });
 chrome.runtime.onInstalled.addListener(() => {
 	createContextMenus();
 });
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-	let formData = new FormData();
-	formData.append('username', request.data.username);
-	formData.append('password', request.data.password);
-	let requestInfo = {
-		method: "POST",
-		body: formData,
-		referer: request.url,
-		origin: request.url
+	if (request.action == 'login') {
+		api.setUrl(request.url);
+		api.login(request,sendResponse);
+	}else if(request.action == 'getCategories'){
+		api.getAllCategories(sendResponse);
+	}else if(request.action == 'addTorrent'){
+		api.addTorrent(request.data.torrent_link,request.data.category,sendResponse);
+	}else if(request.action == 'getSettings'){
+		api.getConfig(sendResponse);
+	}else if(request.action == 'saveSettings'){
+		config.saveConfig(request.data);
+	}else if(request.action == 'logout'){
+		api.logout(sendResponse);
 	}
-	fetch(request.url, requestInfo).then(result => {
-		if(result.status == 200){
-			chrome.cookies.get({"url": request.url, "name": "SID"}, function(cookie) {
-				qb_cookie = cookie.value;
-				console.log(qb_cookie);
-			});
-		}else{
-		}
-		var resp = {
-			status: result.status,
-			statusText: result.statusText,
-			headers: result.headers,
-			body: result.body
-		}
-		sendResponse(resp);
-	})
 return true;
 });

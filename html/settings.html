@@ -10,12 +10,36 @@
 -->
 <!DOCTYPE html>
 <html>
+    <header>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Settings</title>
+        <link rel="stylesheet" href="../css/pure-min.css">
+        <style>
+            body{
+                margin: 16px;
+                min-width: 150px;
+            }
+        </style>
+    </header>
     <body>
-        <a href="index.php">Home</a>
-        <input type="text" name="URL" placeholder="qbittorrent url" value="http://localhost:8080/">
-        <input type="text" name="username" placeholder="username">
-        <input type="password" name="password" placeholder="password">
-        <button id="login">Login</button>
+        <div class="pure-form pure-form-stacked">
+            <div id="login-div">
+                <label for="URL">qBit url:</label><input id="URL" type="text" name="URL" placeholder="qbittorrent url" value="http://192.168.68.100:8081">
+                <div id="info-group">
+                    <label for="username">Username</label>
+                    <input id="username" type="text" name="username" placeholder="username">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" name="password" placeholder="password">
+                </div>
+                <div id="quick-settings" hidden="hidden">
+                    Categories:<select name="categories"></select>
+                    <button id="save-quick-settings" type="button" class="pure-button pure-button-primary">Save</button>
+                </div>
+                <button id="login" type="submit" class="pure-button pure-button-primary">Login</button>
+            </div>
+        </div>
+        
     </body>
     
     <footer>
