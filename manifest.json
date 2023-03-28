@@ -7,13 +7,16 @@
         "service_worker": "js/background.js",
         "type": "module"
     },
+    "icons": {
+        "16": "icon/logo-16.png",
+        "48": "icon/logo-48.png",
+        "128": "icon/logo-128.png"
+    },
     "permissions": [
         "contextMenus",
         "storage",
         "webRequest",
-        "cookies",
-        "declarativeContent", 
-        "activeTab"
+        "cookies"
     ],
     "action": {
         "default_popup": "html/settings.html"

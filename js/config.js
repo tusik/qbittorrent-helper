@@ -14,27 +14,32 @@ export class Config{
     }
     setCategory(category){
         this.category = category;
+        this.currentCategory = category[Object.keys(category)[0]].name;
+        this.saveConfig(this);
+    }
+    setCurrentCategory(category){
+        this.currentCategory = category;
         this.saveConfig(this);
     }
     saveConfig(config){
-        chrome.storage.local.set({"config": config});
+        chrome.storage.sync.set({"config": config});
         // localStorage.setItem("config", JSON.stringify(config));
     }
     getConfig(sendResponse){
-        chrome.storage.local.get("config").then((result) => {
+        chrome.storage.sync.get("config").then((result) => {
             if(result.config == undefined | result.config == ''){
 
             }else{
-                console.log(JSON.stringify(result.config));
                 this.url=result.config.url;
-                this.cookie=result.config.url;
-                this.category=result.config.url;
+                this.cookie=result.config.cookie;
+                this.category=result.config.category;
+                this.currentCategory=result.config.currentCategory;
                 sendResponse(result.config);
             }
             
         });
     }
     clearConfig(){
-        chrome.storage.local.clear();
+        chrome.storage.sync.clear();
     }
 }

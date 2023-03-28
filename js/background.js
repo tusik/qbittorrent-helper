@@ -2,7 +2,7 @@
  * @Author: Image image@by.cx
  * @Date: 2023-03-23 17:12:25
  * @LastEditors: Image image@by.cx
- * @LastEditTime: 2023-03-24 17:07:44
+ * @LastEditTime: 2023-03-27 11:19:40
  * @filePathColon: /
  * @Description: 
  * 
@@ -10,6 +10,7 @@
  */
 import {qBitorrentApi} from "./qbittorrent.js"
 let api = new qBitorrentApi()
+api.getConfig(function(r){console.log(r)});
 function createContextMenus() {
 	chrome.contextMenus.create(
 		{
@@ -25,14 +26,17 @@ function createContextMenus() {
 chrome.contextMenus.onClicked.addListener(menu => {
 	if (menu.menuItemId == 'addToQueueQuick') {
 		let url = menu.linkUrl;
-		let torrent_link = menu.linkUrl;
-		console.log(torrent_link);
-		api.addTorrent(torrent_link);
+		if(api.checkTorrentLink(url)){
+			api.addTorrent(function(r){},url);
+		}
 	}
 });
 chrome.runtime.onInstalled.addListener(() => {
 	createContextMenus();
 });
+function saveQuickSettings(data){
+	api.setCurrentCategory(data.category);
+}
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	if (request.action == 'login') {
 		api.setUrl(request.url);
@@ -40,11 +44,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	}else if(request.action == 'getCategories'){
 		api.getAllCategories(sendResponse);
 	}else if(request.action == 'addTorrent'){
-		api.addTorrent(request.data.torrent_link,request.data.category,sendResponse);
+		api.addTorrent(sendResponse,request.data.torrent_link);
 	}else if(request.action == 'getSettings'){
 		api.getConfig(sendResponse);
 	}else if(request.action == 'saveSettings'){
-		config.saveConfig(request.data);
+		saveQuickSettings(request.data);
 	}else if(request.action == 'logout'){
 		api.logout(sendResponse);
 	}

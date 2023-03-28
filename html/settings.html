@@ -2,7 +2,7 @@
  * @Author: Image image@by.cx
  * @Date: 2023-03-24 09:29:57
  * @LastEditors: Image image@by.cx
- * @LastEditTime: 2023-03-24 14:26:19
+ * @LastEditTime: 2023-03-27 16:03:49
  * @filePathColon: /
  * @Description: 
  * 
@@ -20,23 +20,27 @@
                 margin: 16px;
                 min-width: 150px;
             }
+            .cate-select {
+                height: 3em !important; 
+            }
         </style>
     </header>
     <body>
         <div class="pure-form pure-form-stacked">
             <div id="login-div">
-                <label for="URL">qBit url:</label><input id="URL" type="text" name="URL" placeholder="qbittorrent url" value="http://192.168.68.100:8081">
+                <label for="URL">qBit url:</label><input id="URL" type="text" name="URL" placeholder="qbittorrent url" value="http://127.0.0.1:8080">
                 <div id="info-group">
                     <label for="username">Username</label>
                     <input id="username" type="text" name="username" placeholder="username">
                     <label for="password">Password</label>
                     <input id="password" type="password" name="password" placeholder="password">
+                    <button id="login" type="submit" class="pure-button pure-button-primary">Login</button>
                 </div>
                 <div id="quick-settings" hidden="hidden">
-                    Categories:<select name="categories"></select>
+                    Categories:<select name="categories" class="cate-select"></select>
                     <button id="save-quick-settings" type="button" class="pure-button pure-button-primary">Save</button>
+                    <button id="logout" type="button" class="pure-button pure-button-primary">Logout</button>
                 </div>
-                <button id="login" type="submit" class="pure-button pure-button-primary">Login</button>
             </div>
         </div>
         

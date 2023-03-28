@@ -2,7 +2,7 @@
  * @Author: Image image@by.cx
  * @Date: 2023-03-24 15:49:18
  * @LastEditors: Image image@by.cx
- * @LastEditTime: 2023-03-24 15:49:41
+ * @LastEditTime: 2023-03-27 14:06:57
  * @filePathColon: /
  * @Description: 
  * 
@@ -31,6 +31,9 @@ export class qBitorrentApi{
     setUrl(url){
         config.setUrl(url);
     }
+    setCurrentCategory(category){
+        config.setCurrentCategory(category);
+    }
     setCategory(category){
         config.setCategory(category);
     }
@@ -48,7 +51,6 @@ export class qBitorrentApi{
         fetch(config.url+ApiUri.auth.login, requestInfo).then(result => {
             if(result.status == 200){
                 chrome.cookies.get({"url": config.url, "name": "SID"}, function(cookie) {
-                    console.log(cookie.value);
                     config.setCookie(cookie.value);
                 });
                 
@@ -84,7 +86,7 @@ export class qBitorrentApi{
     addTorrent(sendResponse, torrent_link){
         let formData = new FormData();
         formData.append('urls', torrent_link);
-        formData.append('category', config.category);
+        formData.append('category', config.currentCategory);
         let requestInfo = {
             method: "POST",
             body: formData,
@@ -114,5 +116,10 @@ export class qBitorrentApi{
         });
         
         config.clearConfig();
+    }
+    checkTorrentLink(torrent_link){
+        let magnetReg = /^magnet:\?xt=urn:btih:[0-9a-fA-F]{40,40}.*$/;
+        let httpReg = /^http(s)?:\/\/.*\/.*/;
+        return magnetReg.test(torrent_link) | httpReg.test(torrent_link);
     }
 }
